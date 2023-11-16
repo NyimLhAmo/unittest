@@ -1,1 +1,170 @@
-unit test for pygame
+import unittest
+import pygame
+from unittest.mock import Mock
+
+
+class TestPygameInitialization(unittest.TestCase):
+   def test_pygame_initialization(self):
+       pygame.init()
+       self.assertTrue(pygame.get_init())
+
+if __name__ == '__main__':
+   unittest.main()
+
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Momo jump")
+
+mixer.music.load('sound.wav')
+mixer.music.play(-1)
+
+MomoImag = pygame.image.load('dog.png')
+MomoX = 370
+MomoY = 480
+MomoX_change = 0
+  
+assert pygame.display.get_surface() is not None, "Display was not created successfully"
+assert pygame.display.get_caption() == ("Momo jump", "Momo jump"), "Caption was not set correctly"
+assert pygame.mixer.music.get_busy() == True, "Music was not loaded or played"
+assert isinstance(MomoImag, pygame.Surface), "Image was not loaded"
+
+
+
+class TestBone(unittest.TestCase):
+   def setUp(self):
+       self.boneImag = []
+       self.boneX = []
+       self.boneY = []
+       self.boneX_change = []
+       self.boneY_change = []
+       self.num_of_bone = 3
+       for i in range(self.num_of_bone):
+           self.boneImag.append(pygame.image.load('moo.png'))
+           self.boneX.append(random.randint(50, 800))
+           self.boneY.append(random.randint(50, 150))
+           self.boneX_change.append(4)
+           self.boneY_change.append(40)
+
+   def test_bone_imag(self):
+       self.assertEqual(len(self.boneImag), self.num_of_bone)
+
+   def test_bone_x(self):
+       self.assertEqual(len(self.boneX), self.num_of_bone)
+
+   def test_bone_y(self):
+       self.assertEqual(len(self.boneY), self.num_of_bone)
+
+   def test_bone_x_change(self):
+       self.assertEqual(len(self.boneX_change), self.num_of_bone)
+
+   def test_bone_y_change(self):
+       self.assertEqual(len(self.boneY_change), self.num_of_bone)
+
+class TestPygameFunctions(unittest.TestCase):
+   def setUp(self):
+       pygame.init()
+       self.screen = pygame.display.set_mode((800, 600))
+       self.ballImag = pygame.image.load('poo.png')
+       self.ballX = 0
+       self.ballY = 480
+       self.ballX_change = 0
+       self.ballY_change = 1
+       self.ball_state = "ready"
+       self.score_value = 0
+       self.font = pygame.font.Font('freesansbold.ttf', 32)
+       self.textX = 10
+       self.textY = 10
+       self.over_font = pygame.font.Font('freesansbold.ttf', 64)
+
+   def test_show_score(self):
+       self.show_score(self.textX, self.textY)
+       self.assertEqual(self.score_value, 0)
+
+   def test_game_over_text(self):
+       self.game_over_text()
+       # Here you need to add assertions to check the game over text is displayed correctly
+
+   def show_score(self, x, y):
+       score = self.font.render("score ;" + str(self.score_value), True, (255,255,255))
+       self.screen.blit(score, (x, y))
+
+   def game_over_text(self):
+       over_text = self.over_font.render("GAME OVER ", True, (255,255,255))
+       self.screen.blit(over_text, (200, 250))
+
+   def test_Momo():
+    # Setup: Create a screen and an image
+    screen = pygame.Surface((800, 600))
+    MomoImag = pygame.Surface((50, 50))
+
+    # Call the function with specific arguments
+    Momo(100, 200)
+
+    # Check that the image was drawn at the correct coordinates
+    # This is a simplification; in a real test, you might need to inspect the pixels of the screen
+    assert MomoImag.get_rect().topleft == (100, 200)
+
+   def test_bone(self):
+        # Create a mock screen object
+        screen = Mock()
+
+        # Create a test image
+        test_image = pygame.Surface((10, 10))
+
+        # Mock the list of images
+        boneImag = [test_image]
+
+        # Call the function with the mock screen and test image
+        bone(screen, 5, 10, 0, boneImag)
+
+        # Assert that the blit method was called with the correct arguments
+        screen.blit.assert_called_with(test_image, (5, 10) )
+   def test_fire_ball(self, mock_ballImag, mock_screen):
+    global ball_state
+    x = 10
+    y = 20
+    ball_state = "ready"
+    fire_ball(x, y)
+    mock_screen.blit.assert_called_once_with(mock_ballImag, (x + 16, y + 10))
+    self.assertEqual(ball_state, "fire")
+
+
+   def test_collision(self):
+        self.assertTrue(isCollision(0, 0, 1, 1))
+        self.assertTrue(isCollision(0, 0, 0, 0))
+        self.assertFalse(isCollision(0, 0, 50, 50))
+
+   def move_left():
+    return -1
+
+   def move_right():
+    return 1
+
+   def stop_moving():
+    return 0
+
+   def fire_ball(ball_state):
+    if ball_state == 'ready':
+        return 'fire'
+    return 'ready'
+
+   
+   def test_move_left(self):
+        self.assertEqual(move_left(), -1)
+
+   def test_move_right(self):
+        self.assertEqual(move_right(), 1)
+
+   def test_stop_moving(self):
+        self.assertEqual(stop_moving(), 0)
+
+   def test_fire_ball(self):
+        self.assertEqual(fire_ball('ready'), 'fire')
+        self.assertEqual(fire_ball('fire'), 'ready')
+
+
+if __name__ == '__main__':
+   unittest.main()
